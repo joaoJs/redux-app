@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-const TodoList = props => (
-  <ul>
-    {props.state.map(todo => (
-      <li key={todo.id}>{todo.task}</li>
-    ))}
-  </ul>
+const TodoList = ({ state, addTodo }) => (
+  <Fragment>
+    <ul>
+      {state.map(todo => (
+        <li key={todo.id}>{todo.task}</li>
+      ))}
+    </ul>
+    <button onClick={() => addTodo('Comer')}>Add</button>
+  </Fragment>
 )
 
 TodoList.propTypes = {
@@ -23,4 +26,11 @@ const mapStateToProps = state => ({
   state: state.todos
 })
 
-export default connect(mapStateToProps)(TodoList)
+const mapDispatchToProps = dispatch => ({
+  addTodo: task => dispatch({ type: 'ADD_TODO', payload: { task } })
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodoList)
